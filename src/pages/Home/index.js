@@ -18,7 +18,15 @@ const Page = () => {
   useEffect(() => {
     document.title = '724 - EVENTS'
   })
-  const {last} = useData()
+  const { data } = useData();
+  // Récupération de la derniere réalisation
+  const lastEvent =
+    data?.events.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB - dateA;
+    });
+
   return <>
     <header>
       <Menu />
@@ -121,13 +129,17 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label="boom"
-        />
+        {lastEvent && (
+            <EventCard
+              data-testid="last-event-card"
+              imageSrc={lastEvent[0]?.cover}
+              imageAlt={lastEvent[0]?.description}
+              title={lastEvent[0]?.title}
+              date={new Date(lastEvent[0]?.date)}
+              small
+              label={lastEvent[0]?.type}
+            />
+          )}
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
