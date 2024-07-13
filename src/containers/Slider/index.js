@@ -8,23 +8,27 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+    // Modification sens de sort Avant : evtA < evtB Après :
+    new Date(evtB.date) > new Date(evtA.date) ? 1 : -1
   );
   const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
-      5000
-    );
+    // Check si une date est presente
+    if (byDateDesc !== undefined) {
+      setTimeout(
+        () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
+        5000
+      );
+    }
   };
   useEffect(() => {
     nextCard();
   });
+
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        <>
+          <div key={event.title}>
           <div
-            key={event.title}
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
             }`}
@@ -40,17 +44,20 @@ const Slider = () => {
           </div>
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
+              {byDateDesc.map((dot, radioIdx) => (
                 <input
-                  key={`${event.id}`}
+                  // Modification key par dot.title
+                  key={`${dot.title}`}
                   type="radio"
                   name="radio-button"
-                  checked={idx === radioIdx}
+                  // remplace idx par index
+                  checked={index === radioIdx}
+                  disabled
                 />
               ))}
             </div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );
