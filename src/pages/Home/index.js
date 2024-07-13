@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -12,7 +13,11 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
 const Page = () => {
+  useEffect(() => {
+    document.title = '724 - EVENTS'
+  })
   const {last} = useData()
   return <>
     <header>
