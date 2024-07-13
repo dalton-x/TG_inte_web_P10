@@ -9,24 +9,13 @@ export const FIELD_TYPES = {
 
 const Field = ({ type = FIELD_TYPES.INPUT_TEXT, label, name, placeholder }) => {
   let component;
-  switch (type) {
-    case FIELD_TYPES.INPUT_TEXT:
+  if (type === FIELD_TYPES.TEXTAREA) {
+      component = <textarea id={label} name={name} data-testid="field-testid" />;
+  } else {
       component = (
         <input
           type="text"
-          name={name}
-          placeholder={placeholder}
-          data-testid="field-testid"
-        />
-      );
-      break;
-    case FIELD_TYPES.TEXTAREA:
-      component = <textarea name={name} data-testid="field-testid" />;
-      break;
-    default:
-      component = (
-        <input
-          type="text"
+          id={label}
           name={name}
           placeholder={placeholder}
           data-testid="field-testid"
@@ -35,7 +24,7 @@ const Field = ({ type = FIELD_TYPES.INPUT_TEXT, label, name, placeholder }) => {
   }
   return (
     <div className="inputField">
-      <span>{label}</span>
+      <label htmlFor={label} className="label">{label}</label>
       {component}
     </div>
   );
